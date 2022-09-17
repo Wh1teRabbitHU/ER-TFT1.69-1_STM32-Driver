@@ -89,7 +89,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "/Users/tom/Desktop/jlcpcb/er-tft-1-69-1-adapter")
+      (outputdirectory "../Gerber/")
     )
   )
 
