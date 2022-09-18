@@ -2,57 +2,67 @@
 #include "font_6_12.h"
 
 void HAL_GPIO_FastWritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState) {
-  if (PinState != GPIO_PIN_RESET) {
-    GPIOx->BSRR = (uint32_t)GPIO_Pin;
-  } else {
-    GPIOx->BRR = (uint32_t)GPIO_Pin;
-  }
+	if (PinState == GPIO_PIN_RESET) {
+		GPIOx->BRR = (uint32_t)GPIO_Pin;
+	} else {
+		GPIOx->BSRR = (uint32_t)GPIO_Pin;
+	}
+}
+
+void ST7789V_SetDataPins(uint8_t data) {
+	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(data, 0));
+	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(data, 1));
+	HAL_GPIO_FastWritePin(DATA_2_GPIO_Port, DATA_2_Pin, GET_BIT_VALUE(data, 2));
+	HAL_GPIO_FastWritePin(DATA_3_GPIO_Port, DATA_3_Pin, GET_BIT_VALUE(data, 3));
+	HAL_GPIO_FastWritePin(DATA_4_GPIO_Port, DATA_4_Pin, GET_BIT_VALUE(data, 4));
+	HAL_GPIO_FastWritePin(DATA_5_GPIO_Port, DATA_5_Pin, GET_BIT_VALUE(data, 5));
+	HAL_GPIO_FastWritePin(DATA_6_GPIO_Port, DATA_6_Pin, GET_BIT_VALUE(data, 6));
+	HAL_GPIO_FastWritePin(DATA_7_GPIO_Port, DATA_7_Pin, GET_BIT_VALUE(data, 7));
 }
 
 void ST7789V_Initial(void) {
 	HAL_Delay(5);
-	HAL_GPIO_WritePin(Display_RST_GPIO_Port, Display_RST_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_RST_GPIO_Port, Display_RST_Pin, 0);
 	HAL_Delay(10);
-	HAL_GPIO_WritePin(Display_RST_GPIO_Port, Display_RST_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_RST_GPIO_Port, Display_RST_Pin, 1);
 	HAL_Delay(120);
 
-	 //************* Start Initial Sequence **********//
-	ST7789V_SendCmd(0x36);
+	ST7789V_SendCmd(0x36);			// Memory data access control
     ST7789V_Send8BitData(0x00);
 
-	ST7789V_SendCmd(0x3A);
+	ST7789V_SendCmd(0x3A); 			// Interface pixel format
 	ST7789V_Send8BitData(0x05);
 
-	ST7789V_SendCmd(0xB2);
+	ST7789V_SendCmd(0xB2); 			// Porch control
 	ST7789V_Send8BitData(0x0C);
 	ST7789V_Send8BitData(0x0C);
 	ST7789V_Send8BitData(0x00);
 	ST7789V_Send8BitData(0x33);
 	ST7789V_Send8BitData(0x33);
 
-	ST7789V_SendCmd(0xB7);
+	ST7789V_SendCmd(0xB7); 			// Gate control
 	ST7789V_Send8BitData(0x35);
 
-	ST7789V_SendCmd(0xBB);
-	ST7789V_Send8BitData(0x32); //Vcom=1.35V
+	ST7789V_SendCmd(0xBB); 			// VCOM Settings
+	ST7789V_Send8BitData(0x32); 	// VCOM = 1.35V
 
-	ST7789V_SendCmd(0xC2);
+	ST7789V_SendCmd(0xC2); 			// VDV and VRH Command Enable
 	ST7789V_Send8BitData(0x01);
 
-	ST7789V_SendCmd(0xC3);
-	ST7789V_Send8BitData(0x15); //GVDD=4.8V  ��ɫ���
+	ST7789V_SendCmd(0xC3); 			// VRH Set
+	ST7789V_Send8BitData(0x15); 	// GVDD = 4.8V
 
-	ST7789V_SendCmd(0xC4);
-	ST7789V_Send8BitData(0x20); //VDV, 0x20:0v
+	ST7789V_SendCmd(0xC4); 			// VDV Setting
+	ST7789V_Send8BitData(0x20); 	// VDV, 0x20:0v
 
-	ST7789V_SendCmd(0xC6);
-	ST7789V_Send8BitData(0x0F); //0x0F:60Hz
+	ST7789V_SendCmd(0xC6); 			// FR Control
+	ST7789V_Send8BitData(0x0F);		// 0x0F:60Hz
 
-	ST7789V_SendCmd(0xD0);
+	ST7789V_SendCmd(0xD0); 			// Power Control
 	ST7789V_Send8BitData(0xA4);
 	ST7789V_Send8BitData(0xA1);
 
-	ST7789V_SendCmd(0xE0);
+	ST7789V_SendCmd(0xE0); 			// Positive voltage gamma control
 	ST7789V_Send8BitData(0xD0);
 	ST7789V_Send8BitData(0x08);
 	ST7789V_Send8BitData(0x0E);
@@ -68,7 +78,7 @@ void ST7789V_Initial(void) {
 	ST7789V_Send8BitData(0x31);
 	ST7789V_Send8BitData(0x34);
 
-	ST7789V_SendCmd(0xE1);
+	ST7789V_SendCmd(0xE1); 			// Negative voltage gamma control
 	ST7789V_Send8BitData(0xD0);
 	ST7789V_Send8BitData(0x08);
 	ST7789V_Send8BitData(0x0E);
@@ -83,12 +93,14 @@ void ST7789V_Initial(void) {
 	ST7789V_Send8BitData(0x15);
 	ST7789V_Send8BitData(0x31);
 	ST7789V_Send8BitData(0x34);
-	ST7789V_SendCmd(0x21);
 
- 	ST7789V_SendCmd(0x11);
+	ST7789V_SendCmd(0x21); 			// Display inversion on
+
+ 	ST7789V_SendCmd(0x11); 			// Sleep out
+
 	HAL_Delay(120);
 
-	ST7789V_SendCmd(0x29);
+	ST7789V_SendCmd(0x29); 			// Display on
 }
 
 void ST7789V_SetPosition(uint16_t Xstart, uint16_t Ystart, uint16_t Xend, uint16_t Yend) {
@@ -123,75 +135,47 @@ void ST7789V_ClearScreen(uint16_t bColor) {
 }
 
 void ST7789V_SendCmd(uint8_t data) {
-	HAL_GPIO_WritePin(Display_RS_GPIO_Port, Display_RS_Pin, 0);
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_RS_GPIO_Port, Display_RS_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
 
-	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(data, 0));
-	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(data, 1));
-	HAL_GPIO_FastWritePin(DATA_2_GPIO_Port, DATA_2_Pin, GET_BIT_VALUE(data, 2));
-	HAL_GPIO_FastWritePin(DATA_3_GPIO_Port, DATA_3_Pin, GET_BIT_VALUE(data, 3));
-	HAL_GPIO_FastWritePin(DATA_4_GPIO_Port, DATA_4_Pin, GET_BIT_VALUE(data, 4));
-	HAL_GPIO_FastWritePin(DATA_5_GPIO_Port, DATA_5_Pin, GET_BIT_VALUE(data, 5));
-	HAL_GPIO_FastWritePin(DATA_6_GPIO_Port, DATA_6_Pin, GET_BIT_VALUE(data, 6));
-	HAL_GPIO_FastWritePin(DATA_7_GPIO_Port, DATA_7_Pin, GET_BIT_VALUE(data, 7));
+	ST7789V_SetDataPins(data);
 
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
 
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
 }
 
 void ST7789V_Send8BitData(uint8_t data) {
-	HAL_GPIO_WritePin(Display_RS_GPIO_Port, Display_RS_Pin, 1);
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_RS_GPIO_Port, Display_RS_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
 
-	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(data, 0));
-	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(data, 1));
-	HAL_GPIO_FastWritePin(DATA_2_GPIO_Port, DATA_2_Pin, GET_BIT_VALUE(data, 2));
-	HAL_GPIO_FastWritePin(DATA_3_GPIO_Port, DATA_3_Pin, GET_BIT_VALUE(data, 3));
-	HAL_GPIO_FastWritePin(DATA_4_GPIO_Port, DATA_4_Pin, GET_BIT_VALUE(data, 4));
-	HAL_GPIO_FastWritePin(DATA_5_GPIO_Port, DATA_5_Pin, GET_BIT_VALUE(data, 5));
-	HAL_GPIO_FastWritePin(DATA_6_GPIO_Port, DATA_6_Pin, GET_BIT_VALUE(data, 6));
-	HAL_GPIO_FastWritePin(DATA_7_GPIO_Port, DATA_7_Pin, GET_BIT_VALUE(data, 7));
+	ST7789V_SetDataPins(data);
 
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
 
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
 }
 
 void ST7789V_Send16BitData(uint16_t data) {
 	uint8_t dataHigh = data >> 8;
 	uint8_t dataLow = data;
 
-	HAL_GPIO_WritePin(Display_RS_GPIO_Port, Display_RS_Pin, 1);
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_RS_GPIO_Port, Display_RS_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 0);
 
-	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(dataHigh, 0));
-	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(dataHigh, 1));
-	HAL_GPIO_FastWritePin(DATA_2_GPIO_Port, DATA_2_Pin, GET_BIT_VALUE(dataHigh, 2));
-	HAL_GPIO_FastWritePin(DATA_3_GPIO_Port, DATA_3_Pin, GET_BIT_VALUE(dataHigh, 3));
-	HAL_GPIO_FastWritePin(DATA_4_GPIO_Port, DATA_4_Pin, GET_BIT_VALUE(dataHigh, 4));
-	HAL_GPIO_FastWritePin(DATA_5_GPIO_Port, DATA_5_Pin, GET_BIT_VALUE(dataHigh, 5));
-	HAL_GPIO_FastWritePin(DATA_6_GPIO_Port, DATA_6_Pin, GET_BIT_VALUE(dataHigh, 6));
-	HAL_GPIO_FastWritePin(DATA_7_GPIO_Port, DATA_7_Pin, GET_BIT_VALUE(dataHigh, 7));
+	ST7789V_SetDataPins(dataHigh);
 
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
 
-	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(dataLow, 0));
-	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(dataLow, 1));
-	HAL_GPIO_FastWritePin(DATA_2_GPIO_Port, DATA_2_Pin, GET_BIT_VALUE(dataLow, 2));
-	HAL_GPIO_FastWritePin(DATA_3_GPIO_Port, DATA_3_Pin, GET_BIT_VALUE(dataLow, 3));
-	HAL_GPIO_FastWritePin(DATA_4_GPIO_Port, DATA_4_Pin, GET_BIT_VALUE(dataLow, 4));
-	HAL_GPIO_FastWritePin(DATA_5_GPIO_Port, DATA_5_Pin, GET_BIT_VALUE(dataLow, 5));
-	HAL_GPIO_FastWritePin(DATA_6_GPIO_Port, DATA_6_Pin, GET_BIT_VALUE(dataLow, 6));
-	HAL_GPIO_FastWritePin(DATA_7_GPIO_Port, DATA_7_Pin, GET_BIT_VALUE(dataLow, 7));
+	ST7789V_SetDataPins(dataLow);
 
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
-	HAL_GPIO_WritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 0);
+	HAL_GPIO_FastWritePin(Display_WR_GPIO_Port, Display_WR_Pin, 1);
 
-	HAL_GPIO_WritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
+	HAL_GPIO_FastWritePin(Display_CS_GPIO_Port, Display_CS_Pin, 1);
 }
 
 void ST7789V_ShowChar(uint16_t x, uint16_t y, char value, uint16_t dcolor, uint16_t bgcolor) {

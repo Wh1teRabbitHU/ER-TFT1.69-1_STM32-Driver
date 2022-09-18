@@ -9,17 +9,17 @@ CDefines=USE_HAL_DRIVER;STM32G030xx;USE_HAL_DRIVER;USE_HAL_DRIVER;
 [PreviousGenFiles]
 AdvancedFolderStructure=true
 HeaderFileListSize=3
-HeaderFiles#0=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Inc/stm32g0xx_it.h
-HeaderFiles#1=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Inc/stm32g0xx_hal_conf.h
-HeaderFiles#2=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Inc/main.h
+HeaderFiles#0=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Inc/stm32g0xx_it.h
+HeaderFiles#1=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Inc/stm32g0xx_hal_conf.h
+HeaderFiles#2=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Inc/main.h
 HeaderFolderListSize=1
-HeaderPath#0=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Inc
+HeaderPath#0=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Inc
 HeaderFiles=;
 SourceFileListSize=3
-SourceFiles#0=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Src/stm32g0xx_it.c
-SourceFiles#1=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Src/stm32g0xx_hal_msp.c
-SourceFiles#2=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Src/main.c
+SourceFiles#0=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Src/stm32g0xx_it.c
+SourceFiles#1=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Src/stm32g0xx_hal_msp.c
+SourceFiles#2=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Src/main.c
 SourceFolderListSize=1
-SourcePath#0=/Users/tom/Development/Projects/Private/stm32/ER-TFT1_69-1-Driver/Core/Src
+SourcePath#0=/Users/tom/Development/Projects/Github/ER-TFT1.69-1_STM32-Driver/Driver/Core/Src
 SourceFiles=;
 
