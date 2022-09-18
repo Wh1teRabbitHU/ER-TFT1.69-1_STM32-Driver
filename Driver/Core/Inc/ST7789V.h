@@ -5,6 +5,23 @@
 
 #define GET_BIT_VALUE(binary, pos) (((binary >> pos) & 1) == 1 ? 1 : 0)
 
+#define COLOR_RED		0xF800
+#define COLOR_LIME		0x07E0
+#define COLOR_BLUE		0x001F
+#define COLOR_YELLOW	0xFFE0
+#define COLOR_CYAN		0x07FF
+#define COLOR_MAGENTA	0xF81F
+#define COLOR_SILVER	0xC618
+#define COLOR_GRAY		0x8410
+#define COLOR_MAROON	0x8000
+#define COLOR_OLIVE		0x8400
+#define COLOR_GREEN		0x0400
+#define COLOR_PURPLE	0x8010
+#define COLOR_TEAL		0x0410
+#define COLOR_NAVY		0x0010
+
+uint16_t ST7789V_convert24BitRGBTo16Bit(uint32_t rgbValue);
+
 void ST7789V_Initial(void);
 void ST7789V_ClearScreen(uint16_t bColor);
 void ST7789V_SendCmd(uint8_t cmd);

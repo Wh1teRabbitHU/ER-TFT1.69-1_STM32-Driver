@@ -9,6 +9,14 @@ void HAL_GPIO_FastWritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState
 	}
 }
 
+uint16_t ST7789V_convert24BitRGBTo16Bit(uint32_t rgbValue) {
+	uint16_t r = ((rgbValue >> 19) & 0b11111);
+	uint16_t g = ((rgbValue >> 10) & 0b111111);
+	uint16_t b = ((rgbValue >> 3) & 0b11111);
+
+	return (r << 11) | (g << 5) | b;
+}
+
 void ST7789V_SetDataPins(uint8_t data) {
 	HAL_GPIO_FastWritePin(DATA_0_GPIO_Port, DATA_0_Pin, GET_BIT_VALUE(data, 0));
 	HAL_GPIO_FastWritePin(DATA_1_GPIO_Port, DATA_1_Pin, GET_BIT_VALUE(data, 1));

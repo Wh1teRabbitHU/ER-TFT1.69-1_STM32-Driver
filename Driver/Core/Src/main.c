@@ -93,7 +93,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   ST7789V_Initial();
-  ST7789V_ClearScreen(0x00);
+  ST7789V_ClearScreen(ST7789V_convert24BitRGBTo16Bit(0x0000FF));
   ST7789V_ShowString(84, 50, "ER-TFT1.69-1", 0x001f, 0x0);
   ST7789V_ShowString(66, 70, "Test Text", 0x00f800, 0xffff);
   ST7789V_ShowString(20, 90, "Some more text", 0x00ffe0, 0x00);
