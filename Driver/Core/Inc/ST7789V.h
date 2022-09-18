@@ -3,18 +3,23 @@
 
 #include "main.h"
 
+#define GET_BIT_VALUE(binary, pos) (((binary >> pos) & 1) == 1 ? 1 : 0)
+
 void ST7789V_Initial(void);
-void Write_Cmd_Data(unsigned char);
-void Write_Cmd(unsigned char);
-void Write_Data(unsigned char DH,unsigned char DL);
-void Write_Data_U16(unsigned int y);
-void LCD_SetPos(unsigned int Xstart,unsigned int Ystart,unsigned int Xend,unsigned int Yend);
-void ClearScreen(unsigned int bColor);
-void Draw_Circle(unsigned int x0,unsigned int y0,unsigned char r,unsigned int color);
-void LCD_DrawRectangle(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2,unsigned int color);
-void LCD_DrawLine(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int color);
-void LCD_DrawPoint(unsigned int x,unsigned int y,unsigned int color);
-void showzifustr(unsigned int x,unsigned int y,unsigned char *str,unsigned int dcolor,unsigned int bgcolor);
-void showzifu(unsigned int x,unsigned int y,unsigned char value,unsigned int dcolor,unsigned int bgcolor);
+void ST7789V_ClearScreen(uint16_t bColor);
+void ST7789V_SendCmd(uint8_t cmd);
+void ST7789V_Send8BitData(uint8_t data);
+void ST7789V_Send16BitData(uint16_t data);
+
+void ST7789V_ShowChar(uint16_t x, uint16_t y, char value, uint16_t dcolor, uint16_t bgcolor);
+void ST7789V_ShowString(uint16_t x, uint16_t y, char *str, uint16_t dcolor, uint16_t bgcolor);
+void ST7789V_ShowPicture(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t *picture);
+
+void ST7789V_DrawPoint(uint16_t x, uint16_t y, uint16_t color);
+void ST7789V_DrawLine(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2,uint16_t color);
+void ST7789V_DrawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2,uint16_t color);
+void ST7789V_DrawCircle(uint16_t x0,uint16_t y0,uint8_t r,uint16_t color);
+
+void ST7789V_SetPosition(uint16_t Xstart,uint16_t Ystart,uint16_t Xend,uint16_t Yend);
 
 #endif

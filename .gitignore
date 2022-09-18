@@ -53,3 +53,4 @@ dkms.conf
 
 /Driver/Debug/**/*
 /Driver/.settings/**/*
+Adapter/Design/ER-TFT1_69-1 Adapter-backups/**

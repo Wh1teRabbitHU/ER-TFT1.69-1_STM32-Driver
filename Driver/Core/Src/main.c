@@ -93,14 +93,15 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   ST7789V_Initial();
-  ClearScreen(0x00);	//balck
-  showzifustr(84,50,"ER-TFT1.69-1",0x001f,0x0);
-  showzifustr(66,70,"www.buydisplay.com",0x00f800,0xffff);
-  showzifustr(20,90,"drawing Line,Rectangle,Circle",0x00ffe0,0x00);
-  LCD_DrawLine(20,120,220,120,0x07e0);
-  LCD_DrawRectangle(40, 140, 200,180,0xf81f);
-  Draw_Circle(120,120,115,0xf800);
-  LCD_DrawRectangle(0, 0, 239,279,0x001F);
+  ST7789V_ClearScreen(0x00);
+  ST7789V_ShowString(84, 50, "ER-TFT1.69-1", 0x001f, 0x0);
+  ST7789V_ShowString(66, 70, "Test Text", 0x00f800, 0xffff);
+  ST7789V_ShowString(20, 90, "Some more text", 0x00ffe0, 0x00);
+
+  ST7789V_DrawLine(20, 120, 220, 120, 0x07e0);
+  ST7789V_DrawRectangle(40, 140, 200, 180, 0xf81f);
+  ST7789V_DrawCircle(120, 120, 115, 0xf800);
+  ST7789V_DrawRectangle(0, 0, 239, 279, 0x001F);
   /* USER CODE END 2 */
 
   /* Infinite loop */
